@@ -1,0 +1,62 @@
+.header {
+	text-align: center;
+}
+
+.green h3 {
+	color: green;
+}
+
+.categories {
+	text-align: center;
+}
+
+.checkout {
+	right: 0;
+	width: 100%;
+	height: 50%;
+	color: white;
+	background-color: green;
+}
+
+.center {
+	text-align: center;
+}
+
+.card {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	height: 100%;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+.card div {
+	border: 1px solid black;
+	text-align: center;
+	width: 400px;
+	height: 400px;
+	overflow: hidden;
+}
+
+.navbar {
+	display: flex;
+	justify-content: space-evenly;
+}
+
+.price {
+	color: green;
+}
+
+img {
+	height: 20%;
+	width: 20%;
+}
+
+strong {
+	color: black;
+}
+
+s {
+	color: red;
+}
