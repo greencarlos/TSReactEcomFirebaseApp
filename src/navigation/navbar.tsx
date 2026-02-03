@@ -10,8 +10,6 @@ function NavBar() {
   const cart = store.getState();
   const [loggedIn, setLoggedIn] = useContext<boolean>(LoginContext);
 
-  console.log("isLoggedIn", loggedIn);
-
   if (loggedIn) {
     window.location.href = "/login";
   }
@@ -23,9 +21,7 @@ function NavBar() {
         <NavLink to="/Cart">
           Cart {cart.length > 0 ? "(" + cart.length + ")" : ""}
         </NavLink>
-        <NavLink to="/profile">
-          Profile
-        </NavLink>
+        <NavLink to="/profile">Profile</NavLink>
         <Logout />
       </div>
     </>

@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, Auth } from "firebase/auth";
+import {getStorage} from 'firebase/storage'
 import firebaseKeys from "./firebaseKeys";
 
 const {
@@ -22,5 +23,6 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth: Auth = getAuth(app);
+const storage = getStorage(app)
 
-export { auth };
+export { auth, storage };
