@@ -1,8 +1,32 @@
+import { useState } from "react";
 import { Rating } from "@mui/material";
 import { NavLink } from "react-router";
+import { doc, deleteDoc, updateDoc } from "firebase/firestore";
 import { store, addToCart } from "../store/CartStore";
+import { db } from "../../firebaseConfig";
 
 function ProductComp({ product }) {
+  const [productKey, setKey] = useState("");
+  const [productVal, setVal] = useState("");
+
+  const handleDelete = async () => {
+    const productDoc = doc(db, "products", product.id);
+    await deleteDoc(productDoc);
+    window.location.reload();
+  };
+
+  const handleUpdate = async () => {
+    const updatedVal = {};
+    const productDoc = doc(db, "products", product.id);
+
+    updatedVal[`${productKey}`] = productVal;
+    await updateDoc(productDoc, updatedVal);
+
+    setKey("");
+    setVal("");
+    window.location.reload();
+  };
+
   const add = (p) => {
     store.dispatch(addToCart(p));
   };
@@ -13,6 +37,7 @@ function ProductComp({ product }) {
         <p>
           <strong>Title:</strong> {product.title}
         </p>
+        <button onClick={() => handleDelete()}>Delete product</button>
         <p className="price">
           <strong>Price:</strong> {Math.round(product.price) + ".95"}{" "}
           <s>{Math.round(product.price * 1.3) + ".95"}</s>
@@ -35,12 +60,23 @@ function ProductComp({ product }) {
           precision={0.1}
         />
         <br />
-        <button onClick={() => add(product)}>Add to Cart</button>
-        <p>
-          <strong>Description:</strong> {product.description}
-        </p>
         <p>
           <strong>Supply:</strong> {product.rating?.count}
+        </p>
+        <button onClick={() => add(product)}>Add to Cart</button>
+        <br />
+        <select onClick={(e) => setKey(e.target.value)}>
+          {Object.keys(product).map((key) => (
+            <option key={crypto.randomUUID()}>{key}</option>
+          ))}
+        </select>
+        <input
+          placeholder="Update this value"
+          onChange={(e) => setVal(e.target.value)}
+        />
+        <button onClick={() => handleUpdate()}>Update</button>
+        <p>
+          <strong>Description:</strong> {product.description}
         </p>
       </div>
     </div>

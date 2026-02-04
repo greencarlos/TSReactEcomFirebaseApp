@@ -1,61 +1,59 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getAuth, onAuthStateChanged, updateProfile } from "firebase/auth";
 import type { User } from "firebase/auth";
 
 const GetUserComp = () => {
   const auth = getAuth();
-  const [user, setUser] = useState<User | null>(null);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [updatedProfile, setProfile] = useState<User | null>(null);
 
-  onAuthStateChanged(auth, (user: User) => {
-    if (user) {
-      console.log('email', user.email, 'number', user.phoneNumber)
-      setUser(user);
-    } else {
-      return <p>User is not logged in...</p>;
-    }
-  });
+  useEffect(() => {
+    onAuthStateChanged(auth, async (user: User) => {
+      if (user) {
+        await setCurrentUser(user);
+      }
+    });
+  }, []);
 
   const changeProfile = async () => {
-    console.log("updatedProfile", updatedProfile);
     await updateProfile(auth.currentUser, updatedProfile);
-    //alert("Profile updated!")
-    //window.location.reload();
+    alert("Profile updated!");
+    window.location.reload();
   };
 
   return (
     <div className="center">
-      {user && (
+      {currentUser && (
         <div>
           <p>
-            <b>Current Email:</b> {user.email}
+            <b>Current Email:</b> {currentUser.email}
             <br />
             <input
               placeholder="Enter a new email"
               type="email"
               onChange={(e) => {
-                setProfile({ ...user, email: e.target.value });
+                setProfile({ ...currentUser, email: e.target.value });
               }}
             />
             <br />
             <br />
-            <b>Current Name:</b> {user.displayName}
+            <b>Current Name:</b> {currentUser.displayName}
             <br />
             <input
               placeholder="Enter a new name"
               onChange={(e) => {
-                setProfile({ ...user, displayName: e.target.value });
+                setProfile({ ...currentUser, displayName: e.target.value });
               }}
             />
             <br />
             <br />
-            <b>Current Number:</b> {user.phoneNumber}
+            <b>Current Number:</b> {currentUser.phoneNumber}
             <br />
             <input
               placeholder="Enter a new number"
               type="number"
               onChange={(e) => {
-                setProfile({ ...user, phoneNumber: e.target.value });
+                setProfile({ ...currentUser, phoneNumber: e.target.value });
               }}
             />
           </p>

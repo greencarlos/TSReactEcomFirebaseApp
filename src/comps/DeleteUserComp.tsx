@@ -11,7 +11,6 @@ const DeleteUserComp = () => {
   onAuthStateChanged(auth, (user: User) => {
     if (user) {
       setUser(user);
-      console.log("user", user);
     } else {
       return <p>User is not logged in...</p>;
     }
