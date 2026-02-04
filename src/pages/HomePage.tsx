@@ -1,63 +1,88 @@
-import { useState, useContext } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useState, useEffect } from "react";
 import NavBar from "../navigation/navbar";
 import ProductComp from "../comps/ProductComp";
+import { db } from "../../firebaseConfig";
+import { getDocs, collection } from "firebase/firestore";
+import NewProductComp from "../comps/NewProductComp";
 
 function HomePage() {
-  const [categories, setCategories] = useState<string>([]);
-  const [products, setProducts] = useState([]);
+  const [productList, setProductList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [categories, setCategories] = useState([]);
 
-  const { isPending, error, data, isFetching } = useQuery({
-    queryKey: ["products"],
-    queryFn: async () => {
-      const response = await fetch("https://fakestoreapi.com/products");
-      const result = await response.json();
-      setProducts(result);
-      return result;
-    },
-  });
+  const productsCollectionRef = collection(db, "products");
 
-  if (isPending) return <p>Loading...</p>;
-  if (error) return <p>An error has occured: {error.message}</p>;
+  useEffect(() => {
+    const getProductList = async () => {
+      try {
+        setIsLoading(true);
+        const data = await getDocs(productsCollectionRef);
+        const filteredData = data.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
 
-  const selectCategories = (evt) => {
-    if (evt.target.value === "all categories") {
-      setProducts(data);
+        setProductList(filteredData);
+        setCategories(filteredData);
+      } catch (err) {
+        console.error("Error: ", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    getProductList();
+  }, []);
+
+  const selectCategories = (value) => {
+    if (value === "all categories") {
+      setCategories(productList);
     } else {
-      setProducts(
-        data.filter((product) => product.category === evt.target.value)
+      setCategories(
+        productList.filter((product) => product.category === value)
       );
     }
   };
+
+  if (isLoading) return <p>Loading...</p>;
 
   return (
     <>
       <NavBar />
       <h1 className="header">Home Page</h1>
-      <p className="center">{isFetching ? "Updating..." : ""}</p>
       <div className="categories">
         <label htmlFor="categories">Select a category: </label>
         <select
           name="categories"
           className="categories"
-          onChange={(e) => selectCategories(e)}
+          onChange={(e) => selectCategories(e.target.value)}
         >
-          <option>all categories</option>
-          {data &&
-            data.length > 0 &&
-            Array.from(new Set(data.map((product) => product.category))).map(
-              (category, i) => (
-                <option key={crypto.randomUUID()}>{category}</option>
+          {productList &&
+            productList.length > 0 &&
+            Array.from(
+              new Set(
+                [
+                  { category: "" },
+                  { category: "all categories" },
+                  ...productList,
+                ].map((product) => product.category)
               )
-            )}
+            ).map((category) => (
+              <option
+                key={crypto.randomUUID()}
+                onClick={(e) => selectCategories(e)}
+              >
+                {category}
+              </option>
+            ))}
         </select>
       </div>
       <div className="card">
-        {products &&
-          products.map((product, idx) => (
+        {categories &&
+          categories.map((product) => (
             <ProductComp key={crypto.randomUUID()} product={product} />
           ))}
       </div>
+      <NewProductComp />
     </>
   );
 }
