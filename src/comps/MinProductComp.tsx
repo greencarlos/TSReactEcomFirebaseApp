@@ -1,4 +1,10 @@
-function MinProductComp({ product, count }) {
+interface Product {
+  title: string;
+  image: string;
+  price: number;
+}
+
+function MinProductComp({ product, count }: {product: Product; count: number}) {
   return (
     <>
       <h2>{product.title + " (" + count + ")"}</h2>

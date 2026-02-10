@@ -13,12 +13,12 @@ const {
 } = firebaseKeys;
 
 const firebaseConfig = {
-  apiKey: apiKey,
-  authDomain: authDomain,
-  projectId: projectId,
-  storageBucket: storageBucket,
-  messagingSenderId: messagingSenderId,
-  appId: appId,
+  apiKey: apiKey || import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: authDomain || import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: projectId || import.meta.env.VITE_FIREBASE_PROEJCT_ID,
+  storageBucket: storageBucket || import.meta.env.STORAGE_BUCKET,
+  messagingSenderId: messagingSenderId || import.meta.env.MESSAGING_SENDER_ID,
+  appId: appId || import.meta.env.APP_ID,
 };
 
 const app = initializeApp(firebaseConfig);

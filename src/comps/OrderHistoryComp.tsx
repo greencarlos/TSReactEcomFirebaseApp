@@ -11,7 +11,7 @@ const OrderHistoryComp = () => {
   const auth = getAuth();
 
   useEffect(() => {
-    onAuthStateChanged(auth, async (user: User) => {
+    onAuthStateChanged(auth, async (user: User | null) => {
       if (user) {
         setCurrentUser(user);
         const ordersRef = collection(db, "orders");

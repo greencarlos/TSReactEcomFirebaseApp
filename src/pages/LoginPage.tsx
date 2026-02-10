@@ -7,11 +7,11 @@ import LoginComp from "../comps/LoginComp";
 import { LoginContext } from "../context/LoginContext";
 import UserContext from "../context/UserContext";
 import LogoutComp from "../comps/LogoutComp";
+import { Link } from "react-router";
 
 const LoginPage = () => {
   const [user, setUser] = useContext<User | null>(UserContext);
   const loginContext = useContext(LoginContext);
-
 
   if (!loginContext) {
     throw new Error("LoginContext not provided");
@@ -26,6 +26,9 @@ const LoginPage = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 5000);
     });
     return () => unsubscribe();
   }, []);
@@ -35,10 +38,9 @@ const LoginPage = () => {
       {user ? (
         <div className="center">
           <h2>Welcome, {user.email}</h2>
-          <p>Redirecting you to the home page in 5 seconds...</p>
-          {setTimeout(() => {
-            window.location.href = "/";
-          }, 5000)}
+          <Link to="/">
+            <button>Click here to get redirected to the Home Page</button>
+          </Link>
           <LogoutComp />
         </div>
       ) : (

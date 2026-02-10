@@ -8,7 +8,7 @@ const GetUserComp = () => {
   const [updatedProfile, setProfile] = useState<User | null>(null);
 
   useEffect(() => {
-    onAuthStateChanged(auth, async (user: User) => {
+    onAuthStateChanged(auth, async (user: User | null) => {
       if (user) {
         await setCurrentUser(user);
       }

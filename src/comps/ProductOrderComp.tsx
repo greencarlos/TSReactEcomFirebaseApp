@@ -1,6 +1,5 @@
 function ProductOrderComp({ order }) {
   const { date, cart } = order;
-
   const newDate = new Date(date);
 
   const totalPrice = cart.reduce((a, c) => {

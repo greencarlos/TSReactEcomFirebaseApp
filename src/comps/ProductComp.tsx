@@ -6,8 +6,8 @@ import { store, addToCart } from "../store/CartStore";
 import { db } from "../../firebaseConfig";
 
 function ProductComp({ product }) {
-  const [productKey, setKey] = useState("");
-  const [productVal, setVal] = useState("");
+  const [productKey, setKey] = useState<string>("");
+  const [productVal, setVal] = useState<string>("");
 
   const handleDelete = async () => {
     const productDoc = doc(db, "products", product.id);

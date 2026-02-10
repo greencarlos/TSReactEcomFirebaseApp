@@ -11,13 +11,13 @@ import PriceComp from "../comps/PriceComp";
 import MinProductComp from "../comps/MinProductComp";
 
 function CheckoutPage() {
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
   const auth = getAuth();
   const cart = store.getState();
   const entries = Object.entries(hashTable(cart));
 
   useEffect(() => {
-    onAuthStateChanged(auth, async (user: User) => {
+    onAuthStateChanged(auth, async (user: User | null) => {
       if (user) {
         setCurrentUser(user);
         const orderRef = collection(db, "orders");
