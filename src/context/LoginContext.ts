@@ -1,5 +1,6 @@
-import {createContext} from 'react'
+import { createContext } from "react";
 
-const LoginContext = createContext(false)
+export const LoginContext = createContext<
+  [boolean, React.Dispatch<React.SetStateAction<boolean>>] | null
+>(null);
 
-export default LoginContext

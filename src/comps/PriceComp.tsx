@@ -1,5 +1,5 @@
 import { store } from "../store/CartStore";
-import {hashTable} from '../funcs/hashTable' 
+import { hashTable } from "../funcs/hashTable";
 
 function PriceComp() {
   const cart = store.getState();

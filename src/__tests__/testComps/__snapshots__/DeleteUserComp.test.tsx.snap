@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`Delete user component matches the snapshot 1`] = `
+<DocumentFragment>
+  <p>
+    User is not logged in...
+  </p>
+</DocumentFragment>
+`;

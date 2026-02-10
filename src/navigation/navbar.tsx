@@ -4,11 +4,17 @@ import { store } from "../store/CartStore";
 import type { User } from "firebase/auth";
 import Logout from "../comps/LogoutComp";
 import UserContext from "../context/UserContext";
-import LoginContext from "../context/LoginContext";
+import { LoginContext } from "../context/LoginContext";
 
 function NavBar() {
   const cart = store.getState();
-  const [loggedIn, setLoggedIn] = useContext<boolean>(LoginContext);
+  const loginContext = useContext(LoginContext);
+
+  if (!loginContext) {
+    throw new Error("LoginContext not provided");
+  }
+
+  const [loggedIn, setLoggedIn] = loginContext;
 
   if (loggedIn) {
     window.location.href = "/login";

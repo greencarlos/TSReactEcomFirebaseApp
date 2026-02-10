@@ -4,13 +4,24 @@ import type { User } from "firebase/auth";
 import { auth } from "../../firebaseConfig";
 import RegisterComp from "../comps/RegisterComp";
 import LoginComp from "../comps/LoginComp";
-import LoginContext from "../context/LoginContext";
+import { LoginContext } from "../context/LoginContext";
 import UserContext from "../context/UserContext";
-import LogoutComp from '../comps/LogoutComp'
+import LogoutComp from "../comps/LogoutComp";
 
 const LoginPage = () => {
   const [user, setUser] = useContext<User | null>(UserContext);
-  const [loggedIn, setLoggedIn] = useContext<boolean>(LoginContext);
+  const loginContext = useContext(LoginContext);
+
+
+  if (!loginContext) {
+    throw new Error("LoginContext not provided");
+  }
+
+  const [loggedIn, setLoggedIn] = loginContext;
+
+  if (loggedIn) {
+    window.location.href = "/login";
+  }
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -28,7 +39,7 @@ const LoginPage = () => {
           {setTimeout(() => {
             window.location.href = "/";
           }, 5000)}
-          <LogoutComp/>
+          <LogoutComp />
         </div>
       ) : (
         <div className="center">

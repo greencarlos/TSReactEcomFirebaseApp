@@ -1,33 +1,45 @@
-import { useState, useContext } from "react";
-import { getAuth, onAuthStateChanged, signOut  } from "firebase/auth";
-import LoginContext from "../context/LoginContext";
+import { useState, useEffect, useContext } from "react";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { LoginContext } from "../context/LoginContext";
 import type { User } from "firebase/auth";
 
 const DeleteUserComp = () => {
   const auth = getAuth();
   const [user, setUser] = useState<User | null>(null);
-  const [loggedIn, setLoggedIn] = useContext<boolean>(LoginContext);
+  const loginContext = useContext(LoginContext);
 
-  onAuthStateChanged(auth, (user: User) => {
-    if (user) {
+  if (!loginContext) {
+    throw new Error("LoginContext not provided");
+  }
+
+  const [loggedIn, setLoggedIn] = loginContext;
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
-    } else {
-      return <p>User is not logged in...</p>;
-    }
-  });
+      setLoggedIn(!!user);
+    });
+    return unsubscribe;
+  }, [auth, setLoggedIn]);
 
   const deleteUser = async () => {
-    const input = window.confirm(
-      `Click "Ok" if you want to delete your profile`
+    if (!user) return;
+
+    const confirmed = window.confirm(
+      "Click 'OK' if you want to delete your profile"
     );
-    if (input) {
-      await signOut(auth);
-      setLoggedIn(false);
-      await user.delete();
-      alert("You've been logged out and your account has been deleted");
-      window.location.href = "/login";
-    }
+
+    if (!confirmed) return;
+
+    await user.delete();
+    await signOut(auth);
+    setLoggedIn(false);
+    window.location.href = "/login";
   };
+
+  if (!user) {
+    return <p>User is not logged in...</p>;
+  }
 
   return (
     <div className="center">

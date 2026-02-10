@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`Logout component tests matches the snapshot 1`] = `
+<DocumentFragment>
+  <button>
+    Logout
+  </button>
+</DocumentFragment>
+`;
