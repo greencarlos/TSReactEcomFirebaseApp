@@ -21,7 +21,11 @@ function CheckoutPage() {
       if (user) {
         setCurrentUser(user);
         const orderRef = collection(db, "orders");
-        await addDoc(orderRef, { date: new Date().getTime(), uid: user.uid, cart: [...cart] });
+        await addDoc(orderRef, {
+          date: new Date().getTime(),
+          uid: user.uid,
+          cart: [...cart],
+        });
       }
     });
   }, []);

@@ -1,4 +1,4 @@
-function ProductOrderComp({ order }) {
+function ProductOrderComp({ order:any }) {
   const { date, cart } = order;
   const newDate = new Date(date);
 
@@ -13,7 +13,6 @@ function ProductOrderComp({ order }) {
   }, {});
 
   const entries = Object.entries(cartHash);
-  console.log("entries", entries, totalPrice);
 
   return (
     <div className="center">

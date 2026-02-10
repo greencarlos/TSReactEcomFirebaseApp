@@ -2,21 +2,35 @@ import { useState } from "react";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../../firebaseConfig";
 
+interface Product {
+  title?: string;
+  category?: string;
+  price?: number;
+  rating?: number;
+  supply?: string;
+  description?: string;
+}
+
 function NewProductComp() {
-  const [newProduct, setNewProduct] = useState({});
+  const [newProduct, setNewProduct] = useState<Product>({
+    title: "",
+    category: "",
+    price: 0,
+    rating: 0,
+    supply: "",
+    description: "",
+  });
   const productCollectionRef = collection(db, "products");
 
-  const handleOnChange = (key, val) => {
-    const newState = { ...newProduct };
-    newState[`${key}`] = val;
+  const handleOnChange = (key:string, val:any) => {
+    const newState = { ...newProduct, [key]: val };
     setNewProduct(newState);
   };
 
-
   const handleSubmit = async () => {
     await addDoc(productCollectionRef, newProduct);
-    setNewProduct({}); // this is intentional to clear newProduct 
-    window.location.reload()
+    setNewProduct({}); // this is intentional to clear newProduct
+    window.location.reload();
   };
 
   return (

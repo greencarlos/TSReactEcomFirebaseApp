@@ -5,7 +5,7 @@ import { doc, deleteDoc, updateDoc } from "firebase/firestore";
 import { store, addToCart } from "../store/CartStore";
 import { db } from "../../firebaseConfig";
 
-function ProductComp({ product }) {
+function ProductComp({ product:any }) {
   const [productKey, setKey] = useState<string>("");
   const [productVal, setVal] = useState<string>("");
 

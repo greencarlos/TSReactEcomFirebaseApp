@@ -15,9 +15,11 @@ const DeleteUserComp = () => {
   const [loggedIn, setLoggedIn] = loginContext;
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
-      setLoggedIn(!!user);
+    const unsubscribe = onAuthStateChanged(auth, async (user: User | null) => {
+      if (user) {
+        setUser(user);
+        setLoggedIn(!!user);
+      }
     });
     return unsubscribe;
   }, [auth, setLoggedIn]);

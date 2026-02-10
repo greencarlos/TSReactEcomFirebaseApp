@@ -16,7 +16,7 @@ const OrderHistoryComp = () => {
         setCurrentUser(user);
         const ordersRef = collection(db, "orders");
         const data = await getDocs(ordersRef);
-        const filteredData = data.docs.map((doc) => ({
+        const filteredData = data.docs.map((doc:any) => ({
           ...doc.data(),
           id: doc.id,
         }));
